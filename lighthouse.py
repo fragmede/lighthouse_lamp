@@ -7,33 +7,35 @@ from util import (
 )
 from enttec_usb_dmx_pro import EnttecUsbDmxPro
 
+CHANNEL_MASTER_CONTROL = 5
+MASTER_LAMP_OFF = 200
+MASTER_LAMP_ON = 255
+
+CHANNEL_BRIGHTNESS = 7
+# simple 0-255 scale
+
+CHANNEL_PAN_LOCATION = 9
+
+CHANNEL_PAN_MOVMENT = 13
+PAN_GOTO_POS = 0
+PAN_CW = 128
+PAN_CCW = 250
+
+CHANNEL_SPEED = 16
+# Speed must be < 50% to safely change direction
+
+CHANNEL_TILT = 11
+TILT_LOW = 0
+TILT_VERTICAL = 128
+TILT_LOW_CONTROLBOX_SIDE = 255
+TILT_LOW_DEGREES = -120
+TILT_VERTICAL_DEGREES = 0
+
+CHANNEL_STROBE = 8
+CHANNEL_STROBE_MIN = 25
+
+
 class Lighthouse(object):
-    CHANNEL_MASTER_CONTROL = 5
-    MASTER_LAMP_OFF = 200
-    MASTER_LAMP_ON = 255
-
-    CHANNEL_BRIGHTNESS = 7
-    # simple 0-255 scale
-
-    CHANNEL_PAN_LOCATION = 9
-
-    CHANNEL_PAN_MOVMENT = 13
-    PAN_GOTO_POS = 0
-    PAN_CW = 128
-    PAN_CCW = 250
-
-    CHANNEL_SPEED = 16
-    # Speed must be < 50% to safely change direction
-
-    CHANNEL_TILT = 11
-    TILT_LOW = 0
-    TILT_VERTICAL = 128
-    TILT_LOW_CONTROLBOX_SIDE = 255
-    TILT_LOW_DEGREES = -120
-    TILT_VERTICAL_DEGREES = 0
-
-    CHANNEL_STROBE = 8
-    CHANNEL_STROBE_MIN = 25
 
     def __init__(self):
         self.brightness = 0
@@ -42,18 +44,19 @@ class Lighthouse(object):
         self.port = get_default_port()
         self.dmx.setPort(self.port)
         self.dmx.connect()
+        #self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF)
 
     def lamp(self, int_brightness):
         """
         Brightness is a percentage, 0-100%
 
         """
-        self.brightness = brightness
-        if brightness is 0:
+        self.brightness = int_brightness
+        if self.brightness == 0:
             self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF)
             return
         self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_ON)
-        self.dmx.setChannel(CHANNEL_BRIGHTNESS, percent_to_dmx(int_brightness))
+        self.dmx.setChannel(CHANNEL_BRIGHTNESS, percent_to_dmx(self.brightness))
 
     def set_pan_position(self, position_degrees):
         """
@@ -79,6 +82,21 @@ class Lighthouse(object):
         raise NotImplemented('set_tilt')
         #value = degrees_to_dmx(tilt_degrees_from_vertical, min_range=)
         #self.dmx.setChannel(CHANNEL_TILT, value)
+
+    def foo(self):
+        self.dmx.setChannel(1, 255)
+        self.dmx.setChannel(3, 255)
+        self.dmx.setChannel(4, 255)
+        self.dmx.setChannel(5, 255)
+        self.dmx.render()
+
+    def bar(self):
+        self.dmx.setChannel(1, 0)
+        self.dmx.setChannel(3, 0)
+        self.dmx.setChannel(4, 0)
+        self.dmx.setChannel(5, 0)
+        self.dmx.render()
+
         
 class Lumin_Slick_Par(object):
     def foo(self):
