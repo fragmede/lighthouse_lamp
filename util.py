@@ -13,3 +13,5 @@ def percent_to_dmx(int_percent):
 def degrees_to_dmx(degrees, min_range=0, max_range=360):
     return int(degrees/(max_range-min_range) * 255)
 
+def brightness_percent_to_dmx(int_percent):
+    return 255 - percent_to_dmx(int_percent)
