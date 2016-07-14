@@ -1,9 +1,10 @@
 
 #import util
 from util import (
+    brightness_percent_to_dmx,
+    degrees_to_dmx,
     get_default_port,
     percent_to_dmx,
-    degrees_to_dmx,
 )
 from enttec_usb_dmx_pro import EnttecUsbDmxPro
 
@@ -42,9 +43,13 @@ class Lighthouse(object):
 
         self.dmx = EnttecUsbDmxPro.EnttecUsbDmxPro()
         self.port = get_default_port()
-        self.dmx.setPort(self.port)
+        self.dmx.setPort(self.port, baud=250000)
         self.dmx.connect()
-        #self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF)
+        #print 'EntTec serial number:', self.dmx.getWidgetSerialNumber()
+        #self.dmx.setDebug('SerialBuffer', True)
+        self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF)
+        self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(180), autoRender=False) # pan location
+        self.dmx.setChannel(CHANNEL_TILT, TILT_VERTICAL, autoRender=False) # tilt
 
     def lamp(self, int_brightness):
         """
@@ -53,10 +58,12 @@ class Lighthouse(object):
         """
         self.brightness = int_brightness
         if self.brightness == 0:
-            self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF)
+            self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF, autoRender=False)
+            self.dmx.render()
             return
-        self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_ON)
-        self.dmx.setChannel(CHANNEL_BRIGHTNESS, percent_to_dmx(self.brightness))
+        self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_ON, autoRender=False)
+        self.dmx.setChannel(CHANNEL_BRIGHTNESS, brightness_percent_to_dmx(self.brightness), autoRender=False)
+        self.dmx.render()
 
     def set_pan_position(self, position_degrees):
         """
@@ -82,6 +89,9 @@ class Lighthouse(object):
         raise NotImplemented('set_tilt')
         #value = degrees_to_dmx(tilt_degrees_from_vertical, min_range=)
         #self.dmx.setChannel(CHANNEL_TILT, value)
+
+    def set_speed(self, speed_percent):
+        self.dmx.setChannel(CHANNEL_SPEED, percent_to_dmx(speed))
 
     def foo(self):
         self.dmx.setChannel(1, 255)
