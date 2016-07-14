@@ -51,7 +51,7 @@ class Lighthouse(object):
         self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(180), autoRender=False) # pan location
         self.dmx.setChannel(CHANNEL_TILT, TILT_VERTICAL, autoRender=False) # tilt
 
-    def lamp(self, int_brightness):
+    def set_lamp(self, int_brightness):
         """
         Brightness is a percentage, 0-100%
 
