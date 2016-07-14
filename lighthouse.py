@@ -1,3 +1,4 @@
+import time
 
 #import util
 from util import (
@@ -5,6 +6,7 @@ from util import (
     degrees_to_dmx,
     get_default_port,
     percent_to_dmx,
+    tilt_to_dmx,
 )
 from enttec_usb_dmx_pro import EnttecUsbDmxPro
 
@@ -35,7 +37,6 @@ TILT_VERTICAL_DEGREES = 0
 CHANNEL_STROBE = 7
 STROBE_MIN = 25
 
-
 class Lighthouse(object):
 
     def __init__(self):
@@ -47,9 +48,10 @@ class Lighthouse(object):
         self.dmx.connect()
         #print 'EntTec serial number:', self.dmx.getWidgetSerialNumber()
         #self.dmx.setDebug('SerialBuffer', True)
-        self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF)
+        self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF, autoRender=False)
         self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(180), autoRender=False) # pan location
         self.dmx.setChannel(CHANNEL_TILT, TILT_VERTICAL, autoRender=False) # tilt
+        self.dmx.render()
 
     def set_lamp(self, int_brightness):
         """
@@ -70,7 +72,8 @@ class Lighthouse(object):
             Moves lamp to a specific rotation
             TODO - Add in don't-burn-down-lighthouse safeguard
         """
-        self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(position_degrees))
+        self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(position_degrees), autoRender=False)
+        self.dmx.render()
         #self.dmx.setChannel(1, 255)
 
     def set_rotation(self, clockwise, speed=100):
@@ -78,20 +81,23 @@ class Lighthouse(object):
             Set rotation and speed
             TODO - assert speed < 50% if already moving
         """
-        self.dmx.setChannel(CHANNEL_SPEED, percent_to_dmx(0))
+        self.dmx.setChannel(CHANNEL_SPEED, percent_to_dmx(0), autoRender=False)
+        self.dmx.render()
+        time.sleep(1)
         if clockwise:
-            self.dmx.setChannel(CHANNEL_PAN_MOVMENT, PAN_CW)
+            self.dmx.setChannel(CHANNEL_PAN_MOVMENT, PAN_CW, autoRender=False)
         else:
-            self.dmx.setChannel(CHANNEL_PAN_MOVMENT, PAN_CCW)
-        self.dmx.setChannel(CHANNEL_SPEED, percent_to_dmx(speed))
+            self.dmx.setChannel(CHANNEL_PAN_MOVMENT, PAN_CCW, autoRender=False)
+        self.dmx.setChannel(CHANNEL_SPEED, percent_to_dmx(speed), autoRender=False)
+        self.dmx.render()
 
-    def set_tilt(self, tilt_degrees_from_vertical):
-        raise NotImplemented('set_tilt')
-        #value = degrees_to_dmx(tilt_degrees_from_vertical, min_range=)
-        #self.dmx.setChannel(CHANNEL_TILT, value)
+    def set_tilt(self, tilt_degrees):
+        self.dmx.setChannel(CHANNEL_TILT, tilt_to_dmx(tilt_degrees), autoRender=False)
+        self.dmx.render()
 
     def set_speed(self, speed_percent):
-        self.dmx.setChannel(CHANNEL_SPEED, percent_to_dmx(speed))
+        self.dmx.setChannel(CHANNEL_SPEED, percent_to_dmx(speed_percent), autoRender=False)
+        self.dmx.render()
 
     def foo(self):
         self.dmx.setChannel(1, 255)
