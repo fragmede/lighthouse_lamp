@@ -1,3 +1,5 @@
+fixup github access on bb
+setup overlayroot on bb
 convert exercise.py to have some sort of server.py, flask or touchosc
 
 allow user controls
