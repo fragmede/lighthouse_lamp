@@ -1,0 +1,11 @@
+convert exercise.py to have some sort of server.py, flask or touchosc
+
+allow user controls
+must have:
+  brightness
+  speed
+  tilt
+Might add
+  direction?
+  shutdown/reboot
+  strobe
