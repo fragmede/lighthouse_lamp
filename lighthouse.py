@@ -37,6 +37,7 @@ TILT_VERTICAL_DEGREES = 0
 CHANNEL_STROBE = 7
 STROBE_MIN = 25
 
+
 class Lighthouse(object):
 
     def __init__(self):
@@ -46,11 +47,11 @@ class Lighthouse(object):
         self.port = get_default_port()
         self.dmx.setPort(self.port, baud=250000)
         self.dmx.connect()
-        #print 'EntTec serial number:', self.dmx.getWidgetSerialNumber()
-        #self.dmx.setDebug('SerialBuffer', True)
+        # print 'EntTec serial number:', self.dmx.getWidgetSerialNumber()
+        # self.dmx.setDebug('SerialBuffer', True)
         self.dmx.setChannel(CHANNEL_MASTER_CONTROL, MASTER_LAMP_OFF, autoRender=False)
-        self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(180), autoRender=False) # pan location
-        self.dmx.setChannel(CHANNEL_TILT, TILT_VERTICAL, autoRender=False) # tilt
+        self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(180), autoRender=False)  # pan location
+        self.dmx.setChannel(CHANNEL_TILT, TILT_VERTICAL, autoRender=False)  # tilt
         self.dmx.render()
 
     def set_lamp(self, int_brightness):
@@ -74,7 +75,7 @@ class Lighthouse(object):
         """
         self.dmx.setChannel(CHANNEL_PAN_LOCATION, degrees_to_dmx(position_degrees), autoRender=False)
         self.dmx.render()
-        #self.dmx.setChannel(1, 255)
+        # self.dmx.setChannel(1, 255)
 
     def set_rotation(self, clockwise, speed=100):
         """
@@ -113,7 +114,7 @@ class Lighthouse(object):
         self.dmx.setChannel(5, 0)
         self.dmx.render()
 
-        
+
 class Lumin_Slick_Par(object):
     def foo(self):
         self.dmx.setChannel(1, 255)
@@ -128,4 +129,3 @@ class Lumin_Slick_Par(object):
         self.dmx.setChannel(4, 0)
         self.dmx.setChannel(5, 0)
         self.dmx.render()
-
