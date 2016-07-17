@@ -4,8 +4,8 @@ import platform
 def get_default_port():
     if platform.system() == 'Linux':
         return '/dev/ttyUSB0'
-    elif platform.system() == 'Mac':
-        return '/dev/tty.usbserial-ENT095626'
+    elif platform.system() == 'Darwin':
+        return '/dev/tty.usbserial-ENSML0W9'
 
 def percent_to_dmx(int_percent):
     return int(int_percent/100 * 255)
