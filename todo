@@ -8,6 +8,10 @@ must have:
   speed
   tilt
 Might add
-  direction?
-  shutdown/reboot
-  strobe
+  direction? G3: direction that the lamp is facing? Like point ENE kind of thing?
+  shutdown/reboot G3: for the enttec? Or lamp? 
+  DONE strobe G3: added to play with osc and weird out max 
+
+
+OSC Server - Reciever
+Do we need a xforwarder again like last year? 
