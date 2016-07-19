@@ -1,0 +1,24 @@
+http://askubuntu.com/questions/645/how-do-you-reset-a-usb-device-from-the-command-line
+
+I haven't found myself in your specific circumstances before, so I'm not sure
+if it'll do enough, but the simplest way I've found to reset a USB device is
+this command: (No external apps necessary)
+
+sudo sh -c "echo 0 > /sys/bus/usb/devices/1-4.6/authorized"
+sudo sh -c "echo 1 > /sys/bus/usb/devices/1-4.6/authorized"
+
+That's the actual one I use to reset my Kinect since libfreenect seems to have
+no API for putting it back to sleep. It's on my Gentoo box, but the kernel
+should be new enough to use the same path structure for sysfs.
+
+Yours obviously wouldn't be 1-4.6 but you can either pull that device path from
+your kernel log (dmesg) or you can use something like lsusb to get the vendor
+and product IDs and then use a quick command like this to list how the paths
+relate to different vendor/product ID pairs:
+
+for X in /sys/bus/usb/devices/*; do 
+    echo "$X"
+    cat "$X/idVendor" 2>/dev/null 
+    cat "$X/idProduct" 2>/dev/null
+    echo
+done
