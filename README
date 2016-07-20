@@ -1,0 +1,22 @@
+Black Rock Lighthouse Service
+
+A Burning Man 2016 Honerarium Project
+
+This runs on a Beaglebone Black, connected to an Enttec USB ->
+DMX module talking to a discontinued 'Space Cannon II' DMX controlled
+spotlight.
+
+This app, written in Python, drives the main lighthouses' lamp itself and
+(will eventually be) deployed via ansible inside lighting.git
+
+INSTALL:
+
+    pip install --pre -r requirements.txt
+
+RUN:
+
+    exercise.py - simple script used to exercise the lamp.
+
+    oscrecv.py - exposes an interface over OSC which allows for direct control via
+TouchOSC on iOS and Android.
+
